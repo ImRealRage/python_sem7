@@ -115,3 +115,171 @@ print("---------- Implementation Over----------")
 
 
 ## Implementing Linked List in Python
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def is_empty(self):
+        return self.head is None
+
+    def append(self, data):
+        new_node = Node(data)
+        if self.is_empty():
+            self.head = new_node
+            return
+        last_node = self.head
+        while last_node.next:
+            last_node = last_node.next
+        last_node.next = new_node
+
+    def prepend(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+
+    def delete(self, key):
+        current_node = self.head
+
+        if current_node and current_node.data == key:
+            self.head = current_node.next
+            current_node = None
+            return
+
+        prev = None
+        while current_node and current_node.data != key:
+            prev = current_node
+            current_node = current_node.next
+
+        if current_node is None:
+            return
+
+        prev.next = current_node.next
+        current_node = None
+
+    def print_list(self):
+        current_node = self.head
+        while current_node:
+            print(current_node.data, end=" -> ")
+            current_node = current_node.next
+        print("None")
+
+
+# Example usage:
+print("----------Linked List Implementation----------")
+ll = LinkedList()
+ll.append(1)
+ll.append(2)
+ll.append(3)
+ll.prepend(0)
+ll.print_list()  # Output: 0 -> 1 -> 2 -> 3 -> None
+
+ll.delete(2)
+ll.print_list()  # Output: 0 -> 1 -> 3 -> None
+
+ll.delete(0)
+ll.print_list()  # Output: 1 -> 3 -> None
+
+ll.delete(3)
+ll.print_list()  # Output: 1 -> None
+
+print("---------- Implementation Over----------")
+
+
+## Implementing Doubly Linked List in Python
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+            return
+        last_node = self.head
+        while last_node.next:
+            last_node = last_node.next
+        last_node.next = new_node
+        new_node.prev = last_node
+
+    def prepend(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+            return
+        self.head.prev = new_node
+        new_node.next = self.head
+        self.head = new_node
+
+    def delete(self, key):
+        curr_node = self.head
+        while curr_node:
+            if curr_node.data == key and curr_node == self.head:
+                if not curr_node.next:
+                    curr_node = None
+                    self.head = None
+                    return
+                else:
+                    next_node = curr_node.next
+                    next_node.prev = None
+                    curr_node.next = None
+                    curr_node = None
+                    self.head = next_node
+                    return
+
+            elif curr_node.data == key:
+                if curr_node.next:
+                    next_node = curr_node.next
+                    prev_node = curr_node.prev
+                    prev_node.next = next_node
+                    next_node.prev = prev_node
+                    curr_node.next = None
+                    curr_node.prev = None
+                    curr_node = None
+                    return
+                else:
+                    prev_node = curr_node.prev
+                    prev_node.next = None
+                    curr_node.prev = None
+                    curr_node = None
+                    return
+            curr_node = curr_node.next
+
+    def print_list(self):
+        curr_node = self.head
+        while curr_node:
+            print(curr_node.data, end=" ")
+            curr_node = curr_node.next
+        print()
+
+
+# Example usage
+
+print("----------Doubly Linked List Implementation----------")
+dll = DoublyLinkedList()
+dll.append(1)
+dll.append(2)
+dll.append(3)
+dll.print_list()  # Output: 1 2 3
+dll.prepend(0)
+dll.print_list()  # Output: 0 1 2 3
+dll.delete(2)
+dll.print_list()  # Output: 0 1 3
+
+print("---------- Implementation Over----------")
