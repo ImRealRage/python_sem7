@@ -281,5 +281,7 @@ dll.prepend(0)
 dll.print_list()  # Output: 0 1 2 3
 dll.delete(2)
 dll.print_list()  # Output: 0 1 3
+dll.delete(3)
+dll.print_list()  # Output: 0 1
 
 print("---------- Implementation Over----------")
