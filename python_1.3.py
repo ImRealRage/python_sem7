@@ -24,7 +24,11 @@ def quadratic_function(x):
 
 
 root = bisection_method(quadratic_function, 0, 3)
+print("################# Bisection method output #################")
+print(" ")
 print("Bisection Method Root:", root)
+print(" ")
+print("################# Bisection method output ends #################")
 
 
 def newton_raphson_method(func, func_derivative, initial_guess, tol=1e-6, max_iter=100):
@@ -48,5 +52,9 @@ def cubic_derivative(x):
 
 
 initial_guess = 1.5
+print("################# Newton Raphson method output #################")
+print(" ")
 root_newton = newton_raphson_method(cubic_function, cubic_derivative, initial_guess)
+print(" ")
+print("################# Newton Raphson method output ends #################")
 print("Newton-Raphson Method Root:", root_newton)
