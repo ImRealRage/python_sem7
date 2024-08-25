@@ -1,0 +1,4 @@
+import subprocess
+
+# Open Calculator app
+subprocess.Popen("calc.exe")
